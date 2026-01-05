@@ -1,4 +1,4 @@
-const { query } = require("../db");
+const pool = require("../db");
 
 const generateOrderId = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

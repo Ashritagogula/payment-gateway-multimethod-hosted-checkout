@@ -1,4 +1,4 @@
-const { query } = require("../db");
+const pool = require("../db");
 
 const authenticateMerchant = async (req, res, next) => {
   const apiKey = req.header("X-Api-Key");
@@ -14,7 +14,7 @@ const authenticateMerchant = async (req, res, next) => {
   }
 
   try {
-    const result = await query(
+    const result = await pool.query(
       `SELECT * FROM merchants 
        WHERE api_key = $1 
        AND api_secret = $2 
@@ -34,10 +34,12 @@ const authenticateMerchant = async (req, res, next) => {
     req.merchant = result.rows[0];
     next();
   } catch (err) {
-    return res.status(500).json({
+    console.error("Auth Error:", err.message);
+
+    return res.status(401).json({
       error: {
-        code: "INTERNAL_SERVER_ERROR",
-        description: "Authentication failed"
+        code: "AUTHENTICATION_ERROR",
+        description: "Invalid API credentials"
       }
     });
   }
