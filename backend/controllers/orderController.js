@@ -74,6 +74,51 @@ const createOrder = async (req, res) => {
   }
 };
 
-module.exports = {
-  createOrder
+const getOrderById = async (req, res) => {
+  try {
+    const { order_id } = req.params;
+
+    const result = await query(
+      `SELECT * FROM orders 
+       WHERE id = $1 AND merchant_id = $2`,
+      [order_id, req.merchant.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: {
+          code: "NOT_FOUND_ERROR",
+          description: "Order not found"
+        }
+      });
+    }
+
+    const order = result.rows[0];
+
+    return res.status(200).json({
+      id: order.id,
+      merchant_id: order.merchant_id,
+      amount: order.amount,
+      currency: order.currency,
+      receipt: order.receipt,
+      notes: order.notes || {},
+      status: order.status,
+      created_at: order.created_at,
+      updated_at: order.updated_at
+    });
+  } catch (err) {
+    console.error("Get Order Error:", err);
+    return res.status(500).json({
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        description: "Unable to fetch order"
+      }
+    });
+  }
 };
+
+module.exports = {
+  createOrder,
+  getOrderById
+};
+
