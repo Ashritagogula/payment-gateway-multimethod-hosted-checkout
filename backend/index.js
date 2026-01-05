@@ -25,6 +25,10 @@ app.get("/health", async (req, res) => {
   });
 });
 
+const orderRoutes = require("./routes/orders");
+app.use(orderRoutes);
+
+
 app.listen(PORT, () => {
   console.log(`API server running on port ${PORT}`);
 });
