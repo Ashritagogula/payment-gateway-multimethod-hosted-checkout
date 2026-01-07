@@ -1,5 +1,6 @@
 const pool = require("../db");
 
+// Generate order_id: order_ + 16 alphanumeric characters
 const generateOrderId = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let id = "order_";
@@ -13,6 +14,7 @@ const createOrder = async (req, res) => {
   try {
     const { amount, currency = "INR", receipt, notes } = req.body;
 
+    // Validation
     if (!Number.isInteger(amount) || amount < 100) {
       return res.status(400).json({
         error: {
@@ -22,20 +24,22 @@ const createOrder = async (req, res) => {
       });
     }
 
+    // Generate unique order id
     let orderId;
     let exists = true;
 
     while (exists) {
       orderId = generateOrderId();
-      const check = await query(
+      const check = await pool.query(
         "SELECT id FROM orders WHERE id = $1",
         [orderId]
       );
       exists = check.rows.length > 0;
     }
 
-    const result = await query(
-      `INSERT INTO orders 
+    // Insert order
+    const result = await pool.query(
+      `INSERT INTO orders
        (id, merchant_id, amount, currency, receipt, notes, status)
        VALUES ($1, $2, $3, $4, $5, $6, 'created')
        RETURNING *`,
@@ -45,7 +49,7 @@ const createOrder = async (req, res) => {
         amount,
         currency,
         receipt || null,
-        notes ? JSON.stringify(notes) : null
+        notes || null
       ]
     );
 
@@ -62,8 +66,8 @@ const createOrder = async (req, res) => {
       created_at: order.created_at
     });
 
-  } catch (err) {
-    console.error("Create Order Error:", err);
+  } catch (error) {
+    console.error("Create Order Error:", error);
 
     return res.status(500).json({
       error: {
@@ -78,8 +82,8 @@ const getOrderById = async (req, res) => {
   try {
     const { order_id } = req.params;
 
-    const result = await query(
-      `SELECT * FROM orders 
+    const result = await pool.query(
+      `SELECT * FROM orders
        WHERE id = $1 AND merchant_id = $2`,
       [order_id, req.merchant.id]
     );
@@ -106,8 +110,10 @@ const getOrderById = async (req, res) => {
       created_at: order.created_at,
       updated_at: order.updated_at
     });
-  } catch (err) {
-    console.error("Get Order Error:", err);
+
+  } catch (error) {
+    console.error("Get Order Error:", error);
+
     return res.status(500).json({
       error: {
         code: "INTERNAL_SERVER_ERROR",
@@ -121,4 +127,3 @@ module.exports = {
   createOrder,
   getOrderById
 };
-
