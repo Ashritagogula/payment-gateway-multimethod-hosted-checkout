@@ -123,7 +123,49 @@ const getOrderById = async (req, res) => {
   }
 };
 
+const getPublicOrderById = async (req, res) => {
+  try {
+    const { order_id } = req.params;
+
+    const result = await pool.query(
+      `SELECT id, amount, currency, status
+       FROM orders
+       WHERE id = $1`,
+      [order_id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: {
+          code: "NOT_FOUND_ERROR",
+          description: "Order not found"
+        }
+      });
+    }
+
+    const order = result.rows[0];
+
+    return res.status(200).json({
+      id: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      status: order.status
+    });
+
+  } catch (error) {
+    console.error("Get Public Order Error:", error);
+
+    return res.status(500).json({
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        description: "Unable to fetch order"
+      }
+    });
+  }
+};
+
 module.exports = {
   createOrder,
-  getOrderById
+  getOrderById,
+  getPublicOrderById
 };
