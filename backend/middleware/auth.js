@@ -1,13 +1,13 @@
 const pool = require("../db");
 
 const authenticateMerchant = async (req, res, next) => {
-  console.log("🔍 AUTH HEADERS RECEIVED:", req.headers);
+  console.log("AUTH HEADERS RECEIVED:", req.headers);
 
   const apiKey = req.get("X-Api-Key");
   const apiSecret = req.get("X-Api-Secret");
 
-  console.log("🔑 apiKey:", apiKey);
-  console.log("🔑 apiSecret:", apiSecret);
+  console.log("apiKey:", apiKey);
+  console.log("apiSecret:", apiSecret);
 
   if (!apiKey || !apiSecret) {
     return res.status(401).json({
