@@ -7,7 +7,6 @@ function Dashboard() {
     totalAmount: 0,
     successRate: 0,
   });
-
   useEffect(() => {
     fetch("/api/v1/dashboard/stats", {
       headers: {

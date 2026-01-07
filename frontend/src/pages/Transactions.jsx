@@ -14,7 +14,6 @@ function Transactions() {
       .then(res => res.json())
       .then(data => setPayments(data));
   }, []);
-
   return (
     <table data-test-id="transactions-table">
       <thead>
