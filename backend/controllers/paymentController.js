@@ -299,7 +299,42 @@ const getPaymentById = async (req, res) => {
   }
 };
 
+const createPublicPayment = async (req, res) => {
+  try {
+    const { order_id } = req.body;
+
+    const orderResult = await pool.query(
+      "SELECT * FROM orders WHERE id = $1",
+      [order_id]
+    );
+
+    if (orderResult.rows.length === 0) {
+      return res.status(404).json({
+        error: {
+          code: "NOT_FOUND_ERROR",
+          description: "Order not found"
+        }
+      });
+    }
+
+    req.merchant = { id: orderResult.rows[0].merchant_id };
+
+    return createPayment(req, res);
+
+  } catch (error) {
+    console.error("Create Public Payment Error:", error);
+    return res.status(500).json({
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        description: "Unable to create payment"
+      }
+    });
+  }
+};
+
+
 module.exports = {
   createPayment,
-  getPaymentById
+  getPaymentById,
+  createPublicPayment
 };
