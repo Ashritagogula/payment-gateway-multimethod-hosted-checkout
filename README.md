@@ -193,7 +193,7 @@ Screenshots of dashboard and checkout flow are available in /screenshots
 
 Video demo (2–3 minutes) demonstrating the complete payment flow is linked below:
 
-# Demo Video: (link to be added)
+# Demo Video: (https://youtu.be/qLAujb2PrMo)
 
 # Submission Checklist
 
