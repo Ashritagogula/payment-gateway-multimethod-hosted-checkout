@@ -189,7 +189,10 @@ This ensures predictable outcomes for automated evaluation.
 
 # Screenshots & Demo
 
-Screenshots of dashboard and checkout flow are available in /screenshots
+Screenshots of dashboard and checkout flow are available in /docs
+
+### Merchant Login Page
+![Merchant Login](docs/merchant-login.png)
 
 Video demo (2–3 minutes) demonstrating the complete payment flow is linked below:
 
