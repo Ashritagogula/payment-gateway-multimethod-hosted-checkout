@@ -191,11 +191,18 @@ This ensures predictable outcomes for automated evaluation.
 
 Screenshots of dashboard and checkout flow are available in /docs
 
-### Merchant Login Page
+## 📸 Screenshots
+
+### Merchant Login
 ![Merchant Login](docs/merchant-login.png)
 
-### Merchant Logic Flow
-![Merchant Logic](docs/merchant-dashboard.png)
+### Merchant Dashboard
+![Merchant Dashboard](docs/merchant-dashboard.png)
+
+### Payment Flow
+![Complete Payment](docs/complete-payment.png)
+![Payment Success](docs/payment-success.png)
+
 
 Video demo (2–3 minutes) demonstrating the complete payment flow is linked below:
 
