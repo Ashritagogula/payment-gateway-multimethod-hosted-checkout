@@ -194,6 +194,9 @@ Screenshots of dashboard and checkout flow are available in /docs
 ### Merchant Login Page
 ![Merchant Login](docs/merchant-login.png)
 
+### Merchant Logic Flow
+![Merchant Logic](docs/merchant-dashboard.png)
+
 Video demo (2–3 minutes) demonstrating the complete payment flow is linked below:
 
 
